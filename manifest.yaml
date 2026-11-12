@@ -1,0 +1,39 @@
+version: 0.1.0
+type: plugin
+author: hibira
+contact: dev@hibira.io
+name: hibira
+label:
+  en_US: Hibira
+  zh_Hans: Hibira
+  ja_JP: Hibira
+description:
+  en_US: Publish realtime events, send push notifications and ask a person to approve a step before your workflow or agent continues.
+  zh_Hans: 发布实时事件、发送推送通知，并在工作流或 Agent 继续之前请人审批。
+  ja_JP: リアルタイムイベントの配信、プッシュ通知の送信、ワークフローやエージェントが進む前の人による承認ができます。
+icon: icon.svg
+created_at: '2026-11-12T00:00:00Z'
+resource:
+  memory: 268435456
+  permission: {}
+plugins:
+  tools:
+    - provider/hibira.yaml
+meta:
+  version: 0.0.1
+  minimum_dify_version: 1.9.0
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: '3.12'
+    entrypoint: main
+tags:
+  - productivity
+  - utilities
+privacy: PRIVACY.md
+network:
+  domains:
+    - ws.hibira.io
+repo: https://github.com/hibira-io/dify

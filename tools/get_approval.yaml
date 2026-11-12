@@ -1,0 +1,41 @@
+identity:
+  name: get_approval
+  author: hibira
+  label:
+    en_US: Get Approval
+    zh_Hans: 查询审批
+    ja_JP: 承認を確認
+description:
+  human:
+    en_US: Read the status and answer of an approval request, optionally waiting for the answer.
+    zh_Hans: 读取审批请求的状态和回复，可等待回复。
+    ja_JP: 承認依頼の状態と回答を読み取ります。回答を待つこともできます。
+  llm: Check whether a person answered an approval request created by Request Approval. status is "approved", "rejected", "pending" or "expired".
+parameters:
+  - name: approval_id
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Approval ID
+      zh_Hans: 审批 ID
+    human_description:
+      en_US: The approval_id returned by Request Approval
+      zh_Hans: “发起审批”返回的 approval_id
+    llm_description: The approval_id returned by Request Approval, starting with apr_.
+  - name: wait_minutes
+    type: number
+    required: false
+    default: 0
+    min: 0
+    max: 9
+    form: form
+    label:
+      en_US: Wait for Answer (Minutes)
+      zh_Hans: 等待回复（分钟）
+    human_description:
+      en_US: How long to wait while it is still pending, 0 to 9 minutes
+      zh_Hans: 仍未回复时等待多久，0 到 9 分钟
+extra:
+  python:
+    source: tools/get_approval.py

@@ -1,0 +1,117 @@
+identity:
+  name: request_approval
+  author: hibira
+  label:
+    en_US: Request Approval
+    zh_Hans: 发起审批
+    ja_JP: 承認を依頼
+description:
+  human:
+    en_US: Ask a person to approve or reject a step through a Hibira-hosted link, and optionally wait for the answer.
+    zh_Hans: 通过 Hibira 托管的链接请人批准或拒绝某个步骤，并可等待回复。
+    ja_JP: Hibira がホストするリンクで人に承認か却下を依頼し、回答を待つこともできます。
+  llm: Ask a human to decide before doing something risky (refunds, sending emails, deleting data). Returns an answer link and, when waiting, the decision. status is "approved" when the first option was chosen, "rejected" for another option, "pending" if nobody answered yet, or "expired".
+parameters:
+  - name: title
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Question
+      zh_Hans: 问题
+    human_description:
+      en_US: What needs a decision, as a short question (at most 200 characters)
+      zh_Hans: 需要决定的事情，用一句简短的问题（最多 200 字符）
+    llm_description: Short question for the person, for example "Refund order #1042 for $89?". At most 200 characters.
+  - name: details
+    type: string
+    required: false
+    form: llm
+    label:
+      en_US: Details
+      zh_Hans: 详情
+    human_description:
+      en_US: Context shown to the person, what will happen and why (at most 4000 characters)
+      zh_Hans: 给审批人看的背景：会发生什么、为什么（最多 4000 字符）
+    llm_description: Context for the decision, what will happen and why. At most 4000 characters.
+  - name: options
+    type: string
+    required: false
+    form: llm
+    label:
+      en_US: Options
+      zh_Hans: 选项
+    human_description:
+      en_US: 2 to 4 comma-separated choices; the first one approves (default Approve, Reject)
+      zh_Hans: 2 到 4 个以逗号分隔的选项，第一个代表批准（默认 Approve, Reject）
+    llm_description: Optional 2 to 4 comma-separated choices; the first one means approved. Default "Approve, Reject".
+  - name: wait_minutes
+    type: number
+    required: false
+    default: 5
+    min: 0
+    max: 9
+    form: form
+    label:
+      en_US: Wait for Answer (Minutes)
+      zh_Hans: 等待回复（分钟）
+    human_description:
+      en_US: How long to wait for the answer, 0 to 9 minutes. 0 returns right away; use Get Approval later.
+      zh_Hans: 等待回复多久，0 到 9 分钟。0 表示立即返回，之后再用“查询审批”。
+  - name: expires_in_minutes
+    type: number
+    required: false
+    default: 60
+    min: 1
+    max: 10080
+    form: form
+    label:
+      en_US: Link Expires In (Minutes)
+      zh_Hans: 链接有效期（分钟）
+    human_description:
+      en_US: How long the link can be answered, 1 minute to 7 days
+      zh_Hans: 链接可回答的时间，1 分钟到 7 天
+  - name: push_interests
+    type: string
+    required: false
+    form: form
+    label:
+      en_US: Push to Interests
+      zh_Hans: 推送给兴趣
+    human_description:
+      en_US: Send the answer link as a push notification to these comma-separated interests (the app needs Push)
+      zh_Hans: 把审批链接以推送通知发送给这些兴趣（逗号分隔，应用需启用 Push）
+  - name: push_users
+    type: string
+    required: false
+    form: form
+    label:
+      en_US: Push to User IDs
+      zh_Hans: 推送给用户 ID
+    human_description:
+      en_US: Send the answer link as a push notification to these user IDs instead of interests
+      zh_Hans: 改为把审批链接推送给这些用户 ID
+  - name: channel
+    type: string
+    required: false
+    form: form
+    label:
+      en_US: Inbox Channel
+      zh_Hans: 收件箱频道
+    human_description:
+      en_US: Channel that receives an approval event, for an approvals inbox in your own app
+      zh_Hans: 接收审批事件的频道，供你自己应用中的审批收件箱使用
+  - name: agent
+    type: string
+    required: false
+    default: Dify
+    form: form
+    label:
+      en_US: Requester Name
+      zh_Hans: 发起者名称
+    human_description:
+      en_US: Who is asking, shown in the approvals inbox (at most 60 characters)
+      zh_Hans: 谁在发起，显示在审批收件箱中（最多 60 字符）
+extra:
+  python:
+    source: tools/request_approval.py

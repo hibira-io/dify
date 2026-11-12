@@ -1,0 +1,91 @@
+identity:
+  name: send_push
+  author: hibira
+  label:
+    en_US: Send Push Notification
+    zh_Hans: 发送推送通知
+    ja_JP: プッシュ通知を送信
+description:
+  human:
+    en_US: Send a push notification to devices subscribed to interests, or to user IDs (iOS, Android and web).
+    zh_Hans: 向订阅了兴趣（interests）的设备或指定用户 ID 发送推送通知（iOS、Android、网页）。
+    ja_JP: インタレストを購読しているデバイス、またはユーザー ID にプッシュ通知を送ります（iOS、Android、Web）。
+  llm: Send a push notification through Hibira Push to devices subscribed to interests, or to specific user IDs. Needs the Push credentials.
+parameters:
+  - name: target
+    type: select
+    required: true
+    default: interests
+    form: form
+    label:
+      en_US: Send To
+      zh_Hans: 发送对象
+    human_description:
+      en_US: Interests (topics devices subscribe to) or authenticated user IDs
+      zh_Hans: 兴趣（设备订阅的主题）或已认证的用户 ID
+    options:
+      - value: interests
+        label:
+          en_US: Interests
+          zh_Hans: 兴趣
+      - value: users
+        label:
+          en_US: User IDs
+          zh_Hans: 用户 ID
+  - name: recipients
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Interests or User IDs
+      zh_Hans: 兴趣或用户 ID
+    human_description:
+      en_US: Comma-separated interests (at most 100) or user IDs (at most 1000)
+      zh_Hans: 以逗号分隔的兴趣（最多 100 个）或用户 ID（最多 1000 个）
+    llm_description: Comma-separated interests or user IDs, matching the "Send To" setting.
+  - name: title
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Title
+      zh_Hans: 标题
+    human_description:
+      en_US: Notification title
+      zh_Hans: 通知标题
+    llm_description: Short notification title.
+  - name: body
+    type: string
+    required: false
+    form: llm
+    label:
+      en_US: Body
+      zh_Hans: 内容
+    human_description:
+      en_US: Notification text
+      zh_Hans: 通知文字
+    llm_description: Notification body text.
+  - name: deep_link
+    type: string
+    required: false
+    form: llm
+    label:
+      en_US: Link (web)
+      zh_Hans: 链接（网页）
+    human_description:
+      en_US: HTTPS page opened when a web notification is clicked
+      zh_Hans: 点击网页通知时打开的 HTTPS 页面
+    llm_description: Optional https URL opened when the web notification is clicked.
+  - name: data
+    type: string
+    required: false
+    form: form
+    label:
+      en_US: Custom Data (JSON)
+      zh_Hans: 自定义数据（JSON）
+    human_description:
+      en_US: Optional JSON object delivered to the app with the notification
+      zh_Hans: 随通知传给应用的 JSON 对象（可选）
+extra:
+  python:
+    source: tools/send_push.py
