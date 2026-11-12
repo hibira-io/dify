@@ -28,7 +28,8 @@ MAX_WAIT_MINUTES = 9
 def summarize_approval(approval: dict[str, Any]) -> str:
     status = approval.get("status", "unknown")
     if status == "pending":
-        return f"Waiting for an answer. Answer link: {approval.get('url', '')}".strip()
+        url = approval.get("url")
+        return f"Waiting for an answer. Answer link: {url}" if url else "Waiting for an answer."
     if status in ("approved", "rejected"):
         text = f"{status.capitalize()}: {approval.get('choice', '')}".rstrip(": ")
         if approval.get("comment"):
