@@ -116,3 +116,8 @@ def test_get_approval(http):
     http([(200, {"approval_id": "apr_1", "status": "rejected", "choice": "Reject", "comment": "no"})])
     out = run(GetApprovalTool, {"approval_id": "apr_1"})
     assert out[1].text == "Rejected: Reject (comment: no)"
+
+
+def test_summary_without_link():
+    assert summarize_approval({"status": "pending"}) == "Waiting for an answer."
+    assert summarize_approval({"status": "pending", "url": "https://x"}) == "Waiting for an answer. Answer link: https://x"
