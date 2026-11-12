@@ -68,6 +68,30 @@ A typical workflow: Request Approval → IF/ELSE on `status == approved` → do 
 
 Pass the `approval_id` from Request Approval. Optionally wait 0 to 9 minutes while it is pending.
 
+## Recipe: supervisor approval for database changes
+
+Reads run by themselves; a change waits for a supervisor who sees the exact statement and its plan. Your workflow keeps the database connection, so Hibira only carries the question and the answer.
+
+1. The statement arrives in `sql` (a Start variable, or from an LLM node that writes SQL).
+2. A **Code** node marks reads, strictly: one statement, a read word first, no word that writes. Anything unsure is a change.
+
+   ```python
+   import hashlib, re
+
+   def main(sql: str) -> dict:
+       s = sql.strip().rstrip(";").strip()
+       read = (";" not in s
+           and re.match(r"(select|with|explain|show)\b", s, re.I) is not None
+           and re.search(r"\b(insert|update|delete|merge|create|alter|drop|truncate|grant|revoke|copy|call|into|analyze|set|nextval|setval|for\s+(update|share))\b", s, re.I) is None)
+       return {"read": read, "fingerprint": hashlib.sha256(sql.encode()).hexdigest()}
+   ```
+
+3. **IF/ELSE** on `read`: reads go to your database tool on a user that can only read.
+4. Changes: run `EXPLAIN` + the statement for the plan (it does not run it) → **Request Approval** with Question `Run this change on the shop database?` and Details holding the statement, the plan and `SHA-256: ` + `fingerprint`. Push to User IDs reaches the supervisor's phone; Inbox Channel shows it live in your own app.
+5. **IF/ELSE** on `status` = `approved` → run `sql`. On `rejected`, answer with the supervisor's `comment`. For longer waits, set Wait to 0 and check with **Get Approval** later.
+
+The same pattern with a web console and a phone approval page is the [database changes guide](https://hibira.io/use-cases/database-write-approvals).
+
 ## Limits
 
 Plan limits on messages, connections and push apply as on the [pricing page](https://hibira.io/pricing). New approval requests are limited to 1 per second (burst 20) per account.
