@@ -80,4 +80,4 @@ See [PRIVACY.md](PRIVACY.md). The plugin stores nothing and only talks to `ws.hi
 
 - Issues: https://github.com/hibira-io/dify/issues
 - Email: dev@hibira.io
-- [中文摘要](docs/README.zh-TW.md)
+- Chinese summary: https://github.com/hibira-io/dify/blob/main/docs/README.zh-TW.md
