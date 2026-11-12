@@ -1,0 +1,66 @@
+identity:
+  author: hibira
+  name: hibira
+  label:
+    en_US: Hibira
+    zh_Hans: Hibira
+    ja_JP: Hibira
+  description:
+    en_US: Publish realtime events, send push notifications and ask a person to approve a step, with Hibira.
+    zh_Hans: 使用 Hibira 发布实时事件、发送推送通知，并请人审批某个步骤。
+    ja_JP: Hibira でリアルタイムイベントの配信、プッシュ通知の送信、人による承認依頼ができます。
+  icon: icon.svg
+  tags:
+    - productivity
+    - utilities
+credentials_for_provider:
+  app_id:
+    type: text-input
+    required: true
+    label:
+      en_US: App ID
+      zh_Hans: App ID
+    placeholder:
+      en_US: app_...
+    help:
+      en_US: Shown on the app page in the Hibira console
+      zh_Hans: 在 Hibira 控制台的应用页面上
+    url: https://hibira.io/portal
+  key:
+    type: text-input
+    required: true
+    label:
+      en_US: Key
+      zh_Hans: Key
+  secret:
+    type: secret-input
+    required: true
+    label:
+      en_US: Secret
+      zh_Hans: Secret
+  push_instance_id:
+    type: text-input
+    required: false
+    label:
+      en_US: Push Instance ID (optional)
+      zh_Hans: Push Instance ID（可选）
+    help:
+      en_US: Needed only for Send Push. Shown in the Push section of the app page.
+      zh_Hans: 仅“发送推送”需要。在应用页面的 Push 区块中。
+  push_secret_key:
+    type: secret-input
+    required: false
+    label:
+      en_US: Push Secret Key (optional)
+      zh_Hans: Push Secret Key（可选）
+    help:
+      en_US: Needed only for Send Push.
+      zh_Hans: 仅“发送推送”需要。
+tools:
+  - tools/publish_event.yaml
+  - tools/send_push.yaml
+  - tools/request_approval.yaml
+  - tools/get_approval.yaml
+extra:
+  python:
+    source: provider/hibira.py
